@@ -23,6 +23,8 @@ try {
             $error = "Semua field wajib diisi !";
         } elseif ($password != $ulangi_password) {
             $error = "Konfirmasi kata sandi tidak cocok !";
+        } elseif (strlen($password) < 6) {
+            $error = "Kata sandi minimal 6 karakter dan wajib mengandung angka !";
         } elseif (ctype_alpha($password) || ctype_digit($password)) {
             $error = "Kata sandi minimal 6 karakter dan wajib mengandung angka !";
         } else {
@@ -40,13 +42,12 @@ try {
         }
     }
 } catch (PDOException $e) {
-    if ($e->getCode() == 1062) {
+    if ($e->errorInfo[1] == 1062) {
         $error = "Email sudah digunakan, gunakan email lain !";
     } else {
         $error = "Terjadi kesalahan " . $e->getMessage();
     }
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -216,27 +217,27 @@ try {
         <form action="" method="POST">
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso" required>
+                <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso" >
             </div>
 
             <div class="form-group">
                 <label>Alamat Email</label>
-                <input type="email" name="email" class="form-control" placeholder="nama@email.com" required>
+                <input type="email" name="email" class="form-control" placeholder="nama@email.com" >
             </div>
 
             <div class="form-group">
                 <label>Nomor WhatsApp / HP</label>
-                <input type="tel" name="no_hp" class="form-control" placeholder="081234567890" required>
+                <input type="tel" name="no_hp" class="form-control" placeholder="081234567890" >
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Kata Sandi</label>
-                    <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter" required>
+                    <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter" >
                 </div>
                 <div class="form-group">
                     <label>Ulangi Sandi</label>
-                    <input type="password" name="ulangi_password" class="form-control" placeholder="Ketik ulang kata sandi" required>
+                    <input type="password" name="ulangi_password" class="form-control" placeholder="Ketik ulang kata sandi" >
                 </div>
             </div>
 
