@@ -24,23 +24,27 @@ try {
             $command->execute([":email" => $email]);
             $hasil = $command->fetch(PDO::FETCH_ASSOC);
 
+
             if ($hasil['status_member'] == "Nonaktif") {
-                if ($hasil['email' == $email]) {
+                if ($hasil['email'] == $email) {
                     if (password_verify($password, $hasil['password'])) {
-                        $error = "Password tidak sesuai !";
 
                         $_SESSION['user_id'] = $hasil['id'];
                         $_SESSION['nama_lengkap'] = $hasil['nama_lengkap'];
                         $_SESSION['email'] = $hasil['email'];
                         $_SESSION['no_hp'] = $hasil['no_hp'];
 
-                        header("Location: dashboard.php");
-                        exit;
+                        
+                    } else {
+                        $error = "Password tidak sesuai !";
                     }
+                } else {
                     $error = "Email tidak di temukan !";
                 }
+            } else {
                 $error = "Akun anda sedang dinonaktifkan !";
             }
+            header("Location:dashboard.php");
         }
     }
 } catch (PDOException $e) {
