@@ -8,6 +8,7 @@ if (isset($_SESSION['user_id'])) {
     exit;
 }
 
+$sukses = '';
 $error = '';
 
 try {
@@ -28,7 +29,14 @@ try {
             $query = "INSERT INTO tb_pelanggan (nama_lengkap, email, no_hp, password) VALUES (:nama_lengkap, :email, :no_hp, :password)";
 
             $command = $koneksi->prepare($query);
-            $command->execute();
+            $command->execute([
+                "nama_lengkap" => $nama_lengkap,
+                "email" => $email,
+                "no_hp" => $no_hp,
+                "password" => $password
+            ]);
+
+            $sukses = "Pendaftaran berhasil, silakan login !";
         }
     }
 } catch (PDOException $e) {
@@ -91,7 +99,7 @@ try {
             font-size: 14px;
         }
 
-        .alert-box {
+        .alert-box-sukses {
             padding: 12px 16px;
             border-radius: 8px;
             font-size: 13px;
@@ -99,6 +107,16 @@ try {
             background-color: #e8f5e9;
             color: #2e7d32;
             border: 1px solid #c8e6c9;
+            display: block;
+        }
+        .alert-box-error {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            background-color: #f5e8e8;
+            color: #ff0000;
+            border: 1px solid #e6c8c8;
             display: block;
         }
 
@@ -183,9 +201,17 @@ try {
             <p>Formulir Pendaftaran Member Baru</p>
         </div>
 
-        <div class="alert-box">
-            <span>Pesan status pendaftaran ditampilkan di sini</span>
+        <?php if($sukses) :?>
+        <div class="alert-box-sukses">
+            <span><?= $sukses ?></span>
         </div>
+        <?php endif; ?>
+
+        <?php if($error) :?>
+        <div class="alert-box-error">
+            <span><?= $error ?></span>
+        </div>
+        <?php endif; ?>
 
         <form action="" method="POST">
             <div class="form-group">
