@@ -37,7 +37,7 @@ try {
                         $_SESSION["no_hp"] = $hasil["no_hp"];
                         $_SESSION["status_member"] = $hasil["status_member"];
 
-                        header("Location: login.php");
+                        header("Location: dashboard.php");
                         exit;
                     }
                 } else {
