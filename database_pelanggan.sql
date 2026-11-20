@@ -1,6 +1,3 @@
--- Database: db_kopi_member
--- Tabel: tb_pelanggan
-
 CREATE DATABASE IF NOT EXISTS `db_kopi_member`;
 USE `db_kopi_member`;
 

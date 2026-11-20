@@ -4,14 +4,23 @@ session_start();
 require 'config/koneksi.php';
 
 if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
+    echo "<script>
+        alert('Silakan login terlebih dahulu !');
+        window.location.href = 'login.php';
+    </script>";
     exit;
 }
 
+$user_id = $_SESSION["user_id"];
+$nama_lengkap = $_SESSION["nama_lengkap"];
+$email = $_SESSION["email"];
+$no_hp = $_SESSION["no_hp"];
+$status_member = $_SESSION["status_member"];
 ?>
 
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -23,10 +32,12 @@ if (!isset($_SESSION['user_id'])) {
             padding: 0;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
+
         body {
             background-color: #f7f5f0;
             color: #333333;
         }
+
         .navbar {
             background-color: #4e342e;
             padding: 16px 30px;
@@ -34,22 +45,26 @@ if (!isset($_SESSION['user_id'])) {
             justify-content: space-between;
             align-items: center;
             color: #ffffff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
+
         .navbar-brand h2 {
             font-size: 20px;
             font-weight: 700;
             letter-spacing: 0.5px;
         }
+
         .navbar-user {
             display: flex;
             align-items: center;
             gap: 20px;
         }
+
         .navbar-user span {
             font-size: 14px;
             color: #d7ccc8;
         }
+
         .btn-logout {
             background-color: #c62828;
             color: #ffffff;
@@ -60,14 +75,17 @@ if (!isset($_SESSION['user_id'])) {
             font-weight: 600;
             transition: background-color 0.2s;
         }
+
         .btn-logout:hover {
             background-color: #b71c1c;
         }
+
         .container {
             max-width: 960px;
             margin: 35px auto;
             padding: 0 20px;
         }
+
         .welcome-banner {
             background: linear-gradient(135deg, #6d4c41, #3e2723);
             color: #ffffff;
@@ -76,27 +94,32 @@ if (!isset($_SESSION['user_id'])) {
             margin-bottom: 25px;
             box-shadow: 0 6px 18px rgba(62, 39, 35, 0.15);
         }
+
         .welcome-banner h1 {
             font-size: 26px;
             margin-bottom: 8px;
         }
+
         .welcome-banner p {
             color: #efebe9;
             font-size: 14px;
         }
+
         .grid-info {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
+
         .info-card {
             background: #ffffff;
             padding: 24px;
             border-radius: 10px;
             border: 1px solid #e0d5c1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
+
         .info-card h4 {
             color: #795548;
             font-size: 13px;
@@ -104,12 +127,14 @@ if (!isset($_SESSION['user_id'])) {
             letter-spacing: 0.8px;
             margin-bottom: 12px;
         }
+
         .info-card .card-value {
             font-size: 24px;
             font-weight: 700;
             color: #4e342e;
             margin-bottom: 6px;
         }
+
         .badge-status {
             display: inline-block;
             padding: 4px 10px;
@@ -119,13 +144,15 @@ if (!isset($_SESSION['user_id'])) {
             background-color: #e8f5e9;
             color: #2e7d32;
         }
+
         .section-box {
             background: #ffffff;
             padding: 26px;
             border-radius: 10px;
             border: 1px solid #e0d5c1;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
+
         .section-box h3 {
             color: #4e342e;
             font-size: 18px;
@@ -133,9 +160,11 @@ if (!isset($_SESSION['user_id'])) {
             padding-bottom: 10px;
             border-bottom: 1px solid #efebe9;
         }
+
         .benefit-list {
             list-style: none;
         }
+
         .benefit-item {
             padding: 12px 0;
             border-bottom: 1px solid #f4efe6;
@@ -145,9 +174,11 @@ if (!isset($_SESSION['user_id'])) {
             font-size: 14px;
             color: #5d4037;
         }
+
         .benefit-item:last-child {
             border-bottom: none;
         }
+
         .benefit-number {
             width: 26px;
             height: 26px;
@@ -162,6 +193,7 @@ if (!isset($_SESSION['user_id'])) {
         }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar">
@@ -169,26 +201,26 @@ if (!isset($_SESSION['user_id'])) {
             <h2>Kopi Nusantara</h2>
         </div>
         <div class="navbar-user">
-            <span>Masuk sebagai: <strong>Pelanggan Setia</strong> (pelanggan@email.com)</span>
+            <span>Masuk sebagai: <strong>Pelanggan Setia</strong> <?= $email ?></span>
             <a href="logout.php" class="btn-logout">Keluar</a>
         </div>
     </nav>
 
     <div class="container">
         <div class="welcome-banner">
-            <h1>Selamat Datang Kembali, Nama Pelanggan!</h1>
+            <h1>Selamat Datang Kembali, <?= $nama_lengkap ?></h1>
             <p>Terima kasih telah menjadi bagian dari keluarga penikmat Kopi Nusantara.</p>
         </div>
 
         <div class="grid-info">
             <div class="info-card">
                 <h4>Status Keanggotaan</h4>
-                <div class="card-value">Aktif</div>
+                <div class="card-value"><?= $status_member ?></div>
                 <span class="badge-status">Member Terverifikasi</span>
             </div>
             <div class="info-card">
                 <h4>Nomor Kontak Terdaftar</h4>
-                <div class="card-value">081234567890</div>
+                <div class="card-value"><?= $no_hp ?></div>
                 <p style="font-size: 12px; color: #8d6e63;">Digunakan untuk verifikasi penukaran promo kafe.</p>
             </div>
         </div>
@@ -217,4 +249,5 @@ if (!isset($_SESSION['user_id'])) {
     </div>
 
 </body>
+
 </html>

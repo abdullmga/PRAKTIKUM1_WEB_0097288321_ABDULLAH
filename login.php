@@ -8,6 +8,7 @@ if (isset($_SESSION['user_id'])) {
     exit;
 }
 
+$sukses = '';
 $error = '';
 
 try {
@@ -24,22 +25,26 @@ try {
             $command->execute([":email" => $email]);
             $hasil = $command->fetch(PDO::FETCH_ASSOC);
 
-
             if ($command->rowCount() > 0) {
-                if (password_verify($password, $hasil['password'])) {
-                    if ($hasil['status_member'] == "Nonaktifkan") {
+                if (password_verify($password, $hasil["password"])) {
+                    if ($hasil["status_member"] !== "Aktif") {
                         $error = "Akun anda sedang dinonaktifkan !";
                     } else {
-                        $_SESSION['user_id'] = $hasil['id_pelanggan'];
-                        $_SESSION['nama_lengkap'] = $hasil['nama_lengkap'];
-                        $_SESSION['email'] = $hasil['email'];
-                        $_SESSION['no_hp'] = $hasil['no_hp'];
+                        session_regenerate_id(true);
+                        $_SESSION["user_id"] = $hasil["id_pelanggan"];
+                        $_SESSION["nama_lengkap"] = $hasil["nama_lengkap"];
+                        $_SESSION["email"] = $hasil["email"];
+                        $_SESSION["no_hp"] = $hasil["no_hp"];
+                        $_SESSION["status_member"] = $hasil["status_member"];
 
-                        header("Location: dashboard.php");
+                        header("Location: login.php");
+                        exit;
                     }
                 } else {
-                    $error = "Email atau password yang anda masukkan tidak sesuai !";
+                    $error = "Password yang anda masukkan tidak sama!";
                 }
+            } else {
+                $error = "Email tidak ditemukan!";
             }
         }
     }
@@ -106,6 +111,17 @@ try {
             background-color: #ffebee;
             color: #c62828;
             border: 1px solid #ffcdd2;
+            display: block;
+        }
+
+        .alert-box-sukses {
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            margin-bottom: 20px;
+            background-color: #ebfff4;
+            color: #26ff00;
+            border: 1px solid #cdffd2;
             display: block;
         }
 
@@ -180,6 +196,7 @@ try {
             <h2>Kopi Nusantara</h2>
             <p>Portal Loyalitas & Pemesanan Member</p>
         </div>
+
 
         <?php if ($error) : ?>
             <div class="alert-box-error">

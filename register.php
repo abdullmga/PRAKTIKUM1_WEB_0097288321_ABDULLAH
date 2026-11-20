@@ -30,14 +30,15 @@ try {
         } else {
             $query = "INSERT INTO tb_pelanggan (nama_lengkap, email, no_hp, password) VALUES (:nama_lengkap, :email, :no_hp, :password)";
 
+            $hash = password_hash($password, PASSWORD_DEFAULT);
+
             $command = $koneksi->prepare($query);
             $command->execute([
                 "nama_lengkap" => $nama_lengkap,
                 "email" => $email,
                 "no_hp" => $no_hp,
-                "password" => $password
+                "password" => $hash
             ]);
-
             $sukses = "Pendaftaran berhasil, silakan login !";
         }
     }
@@ -110,6 +111,7 @@ try {
             border: 1px solid #c8e6c9;
             display: block;
         }
+
         .alert-box-error {
             padding: 12px 16px;
             border-radius: 8px;
@@ -202,42 +204,42 @@ try {
             <p>Formulir Pendaftaran Member Baru</p>
         </div>
 
-        <?php if($sukses) :?>
-        <div class="alert-box-sukses">
-            <span><?= $sukses ?></span>
-        </div>
+        <?php if ($sukses) : ?>
+            <div class="alert-box-sukses">
+                <span><?= $sukses ?></span>
+            </div>
         <?php endif; ?>
 
-        <?php if($error) :?>
-        <div class="alert-box-error">
-            <span><?= $error ?></span>
-        </div>
+        <?php if ($error) : ?>
+            <div class="alert-box-error">
+                <span><?= $error ?></span>
+            </div>
         <?php endif; ?>
 
         <form action="" method="POST">
             <div class="form-group">
                 <label>Nama Lengkap</label>
-                <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso" >
+                <input type="text" name="nama_lengkap" class="form-control" placeholder="Contoh: Budi Santoso">
             </div>
 
             <div class="form-group">
                 <label>Alamat Email</label>
-                <input type="email" name="email" class="form-control" placeholder="nama@email.com" >
+                <input type="email" name="email" class="form-control" placeholder="nama@email.com">
             </div>
 
             <div class="form-group">
                 <label>Nomor WhatsApp / HP</label>
-                <input type="tel" name="no_hp" class="form-control" placeholder="081234567890" >
+                <input type="tel" name="no_hp" class="form-control" placeholder="081234567890">
             </div>
 
             <div class="form-row">
                 <div class="form-group">
                     <label>Kata Sandi</label>
-                    <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter" >
+                    <input type="password" name="password" class="form-control" placeholder="Minimal 6 karakter">
                 </div>
                 <div class="form-group">
                     <label>Ulangi Sandi</label>
-                    <input type="password" name="ulangi_password" class="form-control" placeholder="Ketik ulang kata sandi" >
+                    <input type="password" name="ulangi_password" class="form-control" placeholder="Ketik ulang kata sandi">
                 </div>
             </div>
 
