@@ -1,3 +1,9 @@
+<?php
+
+session_start();
+require 'config/koneksi.php';
+
+?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
